@@ -20,27 +20,6 @@ _BYTE_CODE(byte v) : val(v)
 inline Print &operator <<(Print &obj, const _BYTE_CODE &arg)
 { obj.write(arg.val); return obj; }
 
-/*
-
-SIOD	A4
-SIOC	A5
-
-VSYNC	2
-HREF	3
-
-WR	8
-RRST	9
-WRST	10
-RCK	11
-
-OE	GND
-PWDN	GND
-RST	RESET
-
-D0-D3	A0-A3
-D4-D7	4-7
-
-*/
 
 #define CAM_VSYNC _BV(PINE4)
 #define CAM_HREF _BV(PINE5)
@@ -565,23 +544,16 @@ if (index % 2 == 0) {
      	d3 = read_one_byte(); // V0
      	d4 = read_one_byte(); // Y1
 
-           b = d2 + 1.4075 * (d1 - 128);
-           g = d2 - 0.3455 * (d1 - 128) - 0.7169 * (d3 - 128);
-           r = d2 + 1.7790 * (d3 - 128);
 } else {
-           b = d4 + 1.4075 * (d1 - 128);
-           g = d4 - 0.3455 * (d1 - 128) - 0.7169 * (d3 - 128);
-           r = d4 + 1.7790 * (d3 - 128);
+           
 }
 
-b = min(max(b, 0), 255);
-g = min(max(g, 0), 255);
-r = min(max(r, 0), 255);
 
 index++;
 
-//Serial << _BYTE(r) << _BYTE(g) << _BYTE(b);
-Serial.println(d2);
+
+Serial << _BYTE(d2);
+
 }
   }
 
@@ -654,10 +626,10 @@ transfer_regvals(ov7670_fmt_yuv422);
 transfer_regvals(ov7670_qqvga);
 
 // Defaults
-transfer_regvals(ov7670_default);
+//transfer_regvals(ov7670_default);
 
 // Color Bars
-SimpleI2C.sccb_write(OV7670_I2C_ADDR, REG_COM17, COM17_CBAR);
+//SimpleI2C.sccb_write(OV7670_I2C_ADDR, REG_COM17, COM17_CBAR);
 
 attachInterrupt(VSYNC_INT, vsync_handler, FALLING);
 }
